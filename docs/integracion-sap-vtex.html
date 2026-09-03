@@ -62,6 +62,7 @@ tr:last-child td{border-bottom:0}
       <div class="nav-title">Contenido</div>
       <a href="#resumen">Resumen</a>
       <a href="#origen">Origen de datos</a>
+      <a href="#mapeo">Mapeo SAP</a>
       <a href="#manual">Ejecucion manual</a>
       <a href="#servicio">Ejecucion desde servicio</a>
       <a href="#flujo">Flujo tecnico</a>
@@ -159,6 +160,225 @@ WHERE ROWNUM = 1;</pre>
       </div>
     </section>
 
+    <section id="mapeo">
+      <h3>Reglas de mapeo SAP</h3>
+      <p>
+        El armado central se realiza en <code>src/services/sapService.js</code> mediante
+        <code>buildRequest(header, detalle, pagos)</code>. El archivo
+        <code>docs/mapeo-xml-sap.xls</code> contiene el detalle de columnas por etiqueta.
+      </p>
+
+      <h4>Documento del cliente</h4>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr>
+              <th>Etiqueta XML</th>
+              <th>Origen</th>
+              <th>Regla</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">PiHeader.RequiresInvoice</td>
+              <td><code>ventas_web.fac_cliente_tipo</code></td>
+              <td>Si es <code>RUC</code>, se envia <code>true</code>; si no, va vacio.</td>
+            </tr>
+            <tr>
+              <td class="mono">CustomerDetails.DocumentType</td>
+              <td><code>ventas_web.DATO1</code></td>
+              <td>Se envia texto directo. El codigo tambien acepta <code>DATO_1</code> como respaldo si existe en el objeto leido.</td>
+            </tr>
+            <tr>
+              <td class="mono">CustomerDetails.LastName</td>
+              <td><code>ventas_web.DATO2</code></td>
+              <td>Se envia texto directo como apellido del cliente.</td>
+            </tr>
+            <tr>
+              <td class="mono">ShippingAddress.ContactFirstName</td>
+              <td><code>ventas_web.CLIENTE_NOMBRE</code></td>
+              <td>Se envia texto directo como nombre de contacto. Si <code>fac_cliente_tipo</code> es <code>RUC</code>, va vacio.</td>
+            </tr>
+            <tr>
+              <td class="mono">ShippingAddress.ContactLastName</td>
+              <td><code>ventas_web.DATO2</code></td>
+              <td>Se envia texto directo como apellido de contacto. Si <code>fac_cliente_tipo</code> es <code>RUC</code>, va vacio.</td>
+            </tr>
+            <tr>
+              <td class="mono">ShippingAddress.DocumentType</td>
+              <td><code>ventas_web.DATO1</code></td>
+              <td>Usa la misma regla del documento del cliente; ya no se toma la primera letra de <code>cliente_tipo</code>. Tambien se envia cuando <code>fac_cliente_tipo</code> es <code>RUC</code>.</td>
+            </tr>
+            <tr>
+              <td class="mono">ShippingAddress.DocumentNumber</td>
+              <td><code>ventas_web.CLIENTE_CI</code></td>
+              <td>Se envia texto directo desde <code>CLIENTE_CI</code>. Tambien se envia cuando <code>fac_cliente_tipo</code> es <code>RUC</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>BillingAddress por RUC</h4>
+      <p>
+        El bloque <code>BillingAddress</code> se genera despues de
+        <code>ShippingAddress</code> solo cuando <code>ventas_web.fac_cliente_tipo</code>
+        es <code>RUC</code>. Si no es RUC, el bloque no se envia.
+      </p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr>
+              <th>Etiqueta XML</th>
+              <th>Origen</th>
+              <th>Regla</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">IdType</td><td><code>ventas_web.fac_cliente_tipo</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">IdNumber</td><td><code>ventas_web.fac_cliente_ci</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">BusinessName</td><td><code>ventas_web.fac_cliente_nombre</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">PhoneNumber</td><td><code>ventas_web.fac_cliente_telefono</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">DepartmentCode</td><td><code>ventas_web.fac_departamen_code</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">DepartmentName</td><td><code>ventas_web.fac_departamen_name</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">ProvinceCode</td><td><code>ventas_web.fac_provincia_code</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">ProvinceName</td><td><code>ventas_web.fac_provincia_name</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">StreetName</td><td><code>ventas_web.cliente_direcion</code></td><td>Direccion principal del cliente.</td></tr>
+            <tr><td class="mono">StreetNumber</td><td><code>ventas_web.cliente_direcion2</code></td><td>Direccion secundaria del cliente.</td></tr>
+            <tr><td class="mono">Reference</td><td><code>ventas_web.cleinte_referencia</code></td><td>Texto directo.</td></tr>
+            <tr><td class="mono">PostalCode / SecondaryStreet</td><td>Vacio</td><td>Se envian siempre vacios.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>DeliveryDetails, retiro en tienda y lineas 600</h4>
+      <p>
+        El bloque <code>DeliveryDetails</code> se genera cuando <code>ventas_web.tipo_entrega</code>
+        es <code>RETIRO EN TIENDA</code>, cuando existe una linea en
+        <code>ventas_web_detalle</code> cuyo <code>codigo</code> inicia con <code>600</code>,
+        o cuando <code>tipo_entrega</code> es <code>DOMICILIO</code> y no existe linea
+        <code>600</code>.
+        Las lineas <code>600</code> se identifican como lineas de entrega y se excluyen de
+        <code>PtItems</code>; no se envian como producto. Si no aplica ninguna de esas
+        condiciones, <code>DeliveryDetails</code> no se genera.
+      </p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr>
+              <th>Etiqueta XML</th>
+              <th>Origen</th>
+              <th>Regla</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">DeliveryMethod</td>
+              <td>Fijo</td>
+              <td>Para <code>DOMICILIO</code> sin linea <code>600</code>, se envia <code>Env&iacute;o Grat&iacute;s Est&aacute;ndar</code>. En los otros casos va vacio.</td>
+            </tr>
+            <tr>
+              <td class="mono">DeliveryCost</td>
+              <td><code>ventas_web_detalle.precio</code></td>
+              <td>Para linea <code>600</code>, se toma la primera linea ordenada por <code>linea</code> cuyo <code>codigo</code> inicia con <code>600</code>. Para <code>DOMICILIO</code> sin linea <code>600</code>, va <code>0.0</code>. Para <code>RETIRO EN TIENDA</code>, va vacio.</td>
+            </tr>
+            <tr>
+              <td class="mono">IsPickupInStore</td>
+              <td><code>ventas_web.tipo_entrega</code></td>
+              <td>Cuando <code>tipo_entrega</code> es <code>RETIRO EN TIENDA</code>, va <code>true</code>. Para <code>DOMICILIO</code> sin linea <code>600</code>, va <code>false</code>.</td>
+            </tr>
+            <tr>
+              <td class="mono">StoreId</td>
+              <td><code>ventas_web.centro_retira</code></td>
+              <td>Para <code>RETIRO EN TIENDA</code>, se toma directamente de <code>centro_retira</code>.</td>
+            </tr>
+            <tr>
+              <td class="mono">DeliveryMinDate</td>
+              <td><code>ventas_web_detalle.fecha_registro</code> / <code>ventas_web.fecha_creacion</code></td>
+              <td>Para linea <code>600</code>, usa <code>fecha_registro</code>. Para <code>DOMICILIO</code> sin linea <code>600</code>, usa <code>fecha_creacion</code>. Formato <code>YYYY-MM-DD</code>. Para <code>RETIRO EN TIENDA</code>, va vacio.</td>
+            </tr>
+            <tr>
+              <td class="mono">DeliveryMaxDate</td>
+              <td><code>fecha_registro + 2 dias</code> / <code>fecha_creacion + 1 dia</code></td>
+              <td>Para linea <code>600</code>, se calcula desde la misma linea de delivery. Para <code>DOMICILIO</code> sin linea <code>600</code>, se calcula desde <code>fecha_creacion</code> mas 1 dia. Formato <code>YYYY-MM-DD</code>. Para <code>RETIRO EN TIENDA</code>, va vacio.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Descuentos por linea</h4>
+      <p>
+        Los descuentos no se envian en <code>PiHeader.Orderdiscounts</code>. Ese bloque no se
+        genera. Cuando una linea de <code>ventas_web_detalle</code> tiene
+        <code>descuento &gt; 0</code>, el descuento se refleja dentro de su propio
+        <code>PtItems.item</code>. Las lineas cuyo <code>codigo</code> inicia con
+        <code>600</code> no participan en <code>PtItems</code>, aunque tengan precio o cantidad.
+      </p>
+      <div class="tbl">
+        <table>
+          <thead>
+            <tr>
+              <th>Etiqueta XML</th>
+              <th>Sin descuento</th>
+              <th>Con descuento</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono">BaseItemPrice</td>
+              <td><code>precio</code> con 2 decimales</td>
+              <td><code>precio_original</code></td>
+            </tr>
+            <tr>
+              <td class="mono">TotaItemPrice</td>
+              <td><code>precio</code> con 2 decimales</td>
+              <td><code>precio</code></td>
+            </tr>
+            <tr>
+              <td class="mono">TotalPrice</td>
+              <td><code>NumberOfItems * TotaItemPrice</code> con 2 decimales</td>
+              <td><code>NumberOfItems * TotaItemPrice</code> con 2 decimales</td>
+            </tr>
+            <tr>
+              <td class="mono">TotalDiscount</td>
+              <td>Mismo valor de <code>TotalPrice</code></td>
+              <td><code>NumberOfItems * descuento</code> con 2 decimales</td>
+            </tr>
+            <tr>
+              <td class="mono">PromotionEntries</td>
+              <td>Vacio</td>
+              <td>Incluye <code>PromotionCode</code>, <code>PromotionName</code>, <code>PromotionType</code>, <code>PromotionGroup</code>, <code>IsEmployeePromotion</code>, <code>DiscountAmount</code> con <code>NumberOfItems * descuento</code>, <code>Description</code> y <code>CouponCode</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="codebox">
+        <div class="codebar">Ejemplo PtItems con descuento</div>
+<pre>&lt;PtItems&gt;
+  &lt;item&gt;
+    &lt;LineNumber&gt;0&lt;/LineNumber&gt;
+    &lt;ProductCode&gt;11059009013&lt;/ProductCode&gt;
+    &lt;Unit&gt;PR&lt;/Unit&gt;
+    &lt;BaseItemPrice&gt;144.99&lt;/BaseItemPrice&gt;
+    &lt;TotaItemPrice&gt;72.49&lt;/TotaItemPrice&gt;
+    &lt;NumberOfItems&gt;1&lt;/NumberOfItems&gt;
+    &lt;TotalPrice&gt;72.49&lt;/TotalPrice&gt;
+    &lt;TotalDiscount&gt;72.50&lt;/TotalDiscount&gt;
+    &lt;PromotionEntries&gt;
+      &lt;PromotionCode&gt;50_DMB_JL26EC2&lt;/PromotionCode&gt;
+      &lt;PromotionName&gt;Descuento de 50%&lt;/PromotionName&gt;
+      &lt;PromotionType&gt;Rule Based Promotion&lt;/PromotionType&gt;
+      &lt;PromotionGroup&gt;50_DMB_JL26EC2&lt;/PromotionGroup&gt;
+      &lt;IsEmployeePromotion&gt;false&lt;/IsEmployeePromotion&gt;
+      &lt;DiscountAmount&gt;72.50&lt;/DiscountAmount&gt;
+      &lt;Description&gt;Descuento de 50%&lt;/Description&gt;
+      &lt;CouponCode/&gt;
+    &lt;/PromotionEntries&gt;
+  &lt;/item&gt;
+&lt;/PtItems&gt;</pre>
+      </div>
+    </section>
+
     <section id="manual">
       <h3>Ejecucion manual</h3>
       <p>
@@ -226,6 +446,39 @@ sapService.enviarFacturaDesdeDb(docVen, pedidoWeb).catch((err) =&gt; {
       <div class="note">
         El envio se dispara despues del <code>commit()</code>. Esto asegura que SAP tome los
         datos ya persistidos en Oracle, no datos en memoria antes de confirmar la transaccion.
+      </div>
+
+      <h4>Servicio interno de reenvio SAP</h4>
+      <p>
+        Para reenviar manualmente una venta ya registrada sin usar autenticacion JWT, se expone
+        el servicio interno <code>msEnivaSapVtex</code>. Recibe <code>doc_ven</code> o
+        <code>pedido_web</code> en JSON, igual que <code>scripts/testSapXml.js</code>.
+      </p>
+      <div class="codebox">
+        <div class="codebar">Endpoint interno</div>
+<pre>POST /picking/vtex/msEnivaSapVtex
+
+{
+  "orderKey": "VTX500442"
+}</pre>
+      </div>
+      <div class="note">
+        Tambien acepta <code>doc_ven</code>, <code>pedido_web</code>, <code>orden</code> o
+        <code>numero_orden</code>. La ruta anterior
+        <code>/picking/vtex/msEnivaSapVtex/VTX500442</code> sigue funcionando.
+      </div>
+      <div class="codebox">
+        <div class="codebar">Respuesta exitosa</div>
+<pre>{
+  "status": "SUCCESS",
+  "message": "Venta enviada a SAP correctamente",
+  "data": {
+    "doc_ven": "VTX500442",
+    "pedido_web": 1648870500307,
+    "lineas_detalle": 1,
+    "lineas_pagos": 1
+  }
+}</pre>
       </div>
     </section>
 
@@ -413,7 +666,7 @@ ORDER BY linea;</pre>
     </section>
 
     <div class="footer">
-      Documento nuevo creado para uso interno. Fecha de referencia: 2026-07-09.
+      Documento actualizado para uso interno. Fecha de referencia: 2026-07-16.
     </div>
   </main>
 </div>

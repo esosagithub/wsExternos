@@ -25,9 +25,9 @@ const sapAxios = axios.create({
     ciphers: 'DEFAULT@SECLEVEL=0'
   })
 });
-const { buildRequest, normalizeSapEnvelope } = require('../src/services/sapService');
+const { buildRequest, postProcessSapEnvelope } = require('../src/services/sapService');
 
-const WSDL_PATH  = process.env.SAP_WSDL_PATH || path.join(__dirname, '..', 'wsdl', 'z_ws_mm_crea_pedidos_ora.wsdl');
+const WSDL_PATH  = path.resolve(__dirname, '..', process.env.SAP_WSDL_PATH || 'wsdl/z_ws_mm_crea_pedidos_ora.wsdl');
 const SAP_URL    = 'https://mths4qas.ec.aseyco.com';
 const SAP_PORT   = 8100;
 const CERT_MODE  = process.argv.includes('--cert');
@@ -137,12 +137,6 @@ async function main() {
       process.env.SAP_PASSWORD
     ));
 
-    client.on('request', (xml) => {
-      console.log('\n=== XML enviado a SAP ===\n');
-      console.log(xml);
-      console.log('\n=== Fin XML ===\n');
-    });
-
     if (!SEND) {
       client.setEndpoint('http://localhost:9999/fake');
       console.log('Modo: solo XML (usa --send para enviar a SAP)\n');
@@ -151,8 +145,16 @@ async function main() {
     }
 
     try {
+      const postProcess = (xml) => {
+        const processedXml = postProcessSapEnvelope(xml, request);
+        console.log('\n=== XML enviado a SAP ===\n');
+        console.log(processedXml);
+        console.log('\n=== Fin XML ===\n');
+        return processedXml;
+      };
+
       const result = await client.ZMmCreaPedidosOrlAsync(request, {
-        postProcess: normalizeSapEnvelope
+        postProcess
       });
       if (SEND) {
         console.log('=== Respuesta SAP ===');

@@ -1,7 +1,7 @@
 {
-  "name": "ws-inventarios",
+  "name": "ws-externos",
   "version": "1.0.0",
-  "description": "Web Service para gestión de inventarios",
+  "description": "Web services para ventas web",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",

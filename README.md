@@ -1,6 +1,6 @@
-# WS Inventarios
+# WS Externos
 
-API REST para gestión de inventarios y ventas web, construida con Node.js + Express y Oracle Database.
+API REST para servicios de ventas web, construida con Node.js + Express y Oracle Database.
 
 ## Requisitos
 
@@ -19,17 +19,13 @@ npm install
 Crear el archivo `.env` en la raíz del proyecto:
 
 ```env
-# Base de datos principal (MS_INVENTARIOS)
+# Base de datos principal
 DB_USER=MS_INVENTARIOS
 DB_PASSWORD=MS_INVENTARIOS
 DB_CONNECT_STRING=<host>:<puerto>/<servicio>
 
 # Puerto de la aplicación
 PORT=3001
-
-# Cache diario de UPC por tienda
-UPC_CACHE_DIRECTORY=docs/MCU
-UPC_CACHE_TIMEZONE=America/Guayaquil
 
 # Autenticación Basic Auth (servicios existentes)
 AUTH_USERNAME=<usuario>
@@ -68,7 +64,7 @@ Servidor corriendo en http://localhost:3001
 ## Estructura del proyecto
 
 ```
-wsInventarios/
+wsExternos/
 ├── config/
 │   ├── database.js          # Pool Oracle principal (MS_INVENTARIOS)
 │   └── databaseVtex.js      # Pool Oracle VTEX (pedidos_web_vtex)
@@ -78,20 +74,12 @@ wsInventarios/
 │   │   ├── auth.js          # Basic Auth (servicios existentes)
 │   │   └── jwtAuth.js       # JWT Bearer Auth (servicio VTEX)
 │   ├── routes/
-│   │   ├── piqueoRoutes.js
-│   │   ├── procesarEscaneosRoutes.js
 │   │   ├── faqRoutes.js
-│   │   ├── upcRoutes.js
-│   │   ├── tercerConteoRoutes.js
 │   │   ├── reportCouponRoutes.js
 │   │   ├── qrRoutes.js
 │   │   └── ventasWebRoutes.js   # Servicio VTEX
 │   └── controllers/
-│       ├── piqueoController.js
-│       ├── procesarEscaneos.js
 │       ├── faqController.js
-│       ├── upcController.js
-│       ├── tercerConteoController.js
 │       ├── reportCouponController.js
 │       ├── qrController.js
 │       └── ventasWebController.js  # Servicio VTEX
@@ -104,16 +92,11 @@ wsInventarios/
 
 ## Servicios disponibles
 
-### Servicios de inventario — Basic Auth — `/api/*`
+### Servicios auxiliares — Basic Auth — `/api/*`
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| POST | `/api/piqueos` | Obtener piqueos por cédula |
-| POST | `/api/actualizar-segundo-conteo` | Actualizar segundo conteo |
-| POST | `/api/procesar-escaneos` | Procesar escaneos |
 | GET/POST | `/api/faq/*` | Consulta de FAQs |
-| POST | `/api/upc/*` | Gestión de UPC |
-| POST | `/api/tercer-conteo/*` | Tercer conteo |
 | POST | `/api/report/coupons` | Reporte de cupones |
 | POST | `/api/generar-qr` | Generación de código QR |
 

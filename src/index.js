@@ -3,11 +3,7 @@ require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') }
 const express = require('express');
 const db = require('../config/database');
 const dbVtex = require('../config/databaseVtex');
-const piqueoRoutes = require('./routes/piqueoRoutes');
-const procesarEscaneosRoutes = require('./routes/procesarEscaneosRoutes');
 const faqRoutes = require('./routes/faqRoutes');
-const upcRoutes = require('./routes/upcRoutes');
-const tercerConteoRoutes = require('./routes/tercerConteoRoutes'); // ⬅️ NUEVO
 const reportCouponRoutes = require('./routes/reportCouponRoutes');
 const qrRoutes = require('./routes/qrRoutes');
 const ventasWebRoutes = require('./routes/ventasWebRoutes');
@@ -20,18 +16,14 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json({ limit: '50mb' }));
 
 // Rutas
-app.use('/api', piqueoRoutes);
-app.use('/api', procesarEscaneosRoutes);
 app.use('/api/faq', faqRoutes);
-app.use('/api', upcRoutes);
-app.use('/api', tercerConteoRoutes);
 app.use('/api', reportCouponRoutes);
 app.use('/api', qrRoutes);
 app.use('/vtex', ventasWebRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
-  res.json({ mensaje: 'API de Inventarios funcionando' });
+  res.json({ mensaje: 'API funcionando' });
 });
 
 // Ruta para estadísticas del pool (debug)

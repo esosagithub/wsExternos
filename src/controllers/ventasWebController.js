@@ -511,6 +511,60 @@ async function insertarVenta(req, res) {
   }
 }
 
+async function msEnivaSapVtex(req, res) {
+  const startMs = Date.now();
+  const queryEjecutado = 'SELECT ventas_web por orderKey + SEND SAP';
+  const body = req.body || {};
+  const orderKey = req.params.orderKey
+    || body.orderKey
+    || body.doc_ven
+    || body.pedido_web
+    || body.orden
+    || body.numero_orden;
+
+  if (!orderKey) {
+    const responseObject = {
+      status: 'ERROR',
+      error: { code: 'MISSING_ORDER', message: 'Se requiere numero de orden en orderKey, doc_ven o pedido_web' }
+    };
+    return sendLogged(req, res, startMs, 400, responseObject, queryEjecutado, responseObject.error.message);
+  }
+
+  try {
+    const { header, detalle, pagos } = await sapService.enviarFacturaPorOrderKey(String(orderKey));
+    const responseObject = {
+      status: 'SUCCESS',
+      message: 'Venta enviada a SAP correctamente',
+      data: {
+        doc_ven: header.doc_ven,
+        pedido_web: header.pedido_web,
+        lineas_detalle: detalle.length,
+        lineas_pagos: pagos.length
+      }
+    };
+    return sendLogged(req, res, startMs, 200, responseObject, queryEjecutado);
+  } catch (err) {
+    console.error(`Error en msEnivaSapVtex orderKey=${orderKey}:`, err);
+    const notFound = String(err.message || '').includes('No se encontro');
+    const responseObject = {
+      status: 'ERROR',
+      error: {
+        code: notFound ? 'ORDER_NOT_FOUND' : 'SAP_SEND_ERROR',
+        message: err.message || String(err)
+      }
+    };
+    return sendLogged(
+      req,
+      res,
+      startMs,
+      notFound ? 404 : 500,
+      responseObject,
+      queryEjecutado,
+      responseObject.error.message
+    );
+  }
+}
+
 async function obtenerPedidosPendientes(req, res) {
   const startMs = Date.now();
   const queryEjecutado = 'SELECT ventas_web_cola_ws JOIN ventas_web pendientes';
@@ -710,6 +764,7 @@ module.exports = {
   login,
   refreshToken,
   insertarVenta,
+  msEnivaSapVtex,
   obtenerPedidosPendientes,
   obtenerStock,
   obtenerPrecios,

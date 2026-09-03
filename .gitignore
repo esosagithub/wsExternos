@@ -33,6 +33,3 @@ build/
 *.tmp
 .cache
 
-# Cache diario generado por /api/inventarios/upcs-por-cedula
-docs/MCU/*.json
-docs/MCU/*.tmp

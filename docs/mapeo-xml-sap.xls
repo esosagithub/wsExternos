@@ -7,7 +7,7 @@
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <LastAuthor>Edison Sosa</LastAuthor>
-  <LastSaved>2026-06-30T16:01:04Z</LastSaved>
+  <LastSaved>2026-07-16T00:00:00Z</LastSaved>
   <Version>16.00</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -61,7 +61,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="Mapeo XML">
-  <Table ss:ExpandedColumnCount="5" ss:ExpandedRowCount="114" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="5" ss:ExpandedRowCount="117" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="60" ss:DefaultRowHeight="14.5">
    <Column ss:Width="170"/>
    <Column ss:AutoFitWidth="0" ss:Width="128"/>
@@ -148,9 +148,9 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PiHeader</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">RequiresInvoice</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Fijo</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Vacio</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se envia vacio.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">FAC_CLIENTE_TIPO / Vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Si FAC_CLIENTE_TIPO = RUC se envia true; si no, se envia vacio.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">CustomerDetails</Data></Cell>
@@ -160,11 +160,11 @@
     <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">CustomerDetails</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">DocumentType</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">CLIENTE_TIPO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Primera letra del valor.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">CustomerDetails</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">DocumentType</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DATO1 / DATO_1</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo desde DATO1. Se acepta DATO_1 como respaldo si existe.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">CustomerDetails</Data></Cell>
@@ -184,7 +184,7 @@
     <Cell ss:StyleID="s63"><Data ss:Type="String">CustomerDetails</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">LastName</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">CLIENTE_NOMBRE</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DATO2</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
@@ -477,79 +477,100 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">DeliveryDetails</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">DeliveryMethod</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">TIPO_ENTREGA</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Envio Gratis Estandar / Vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Si VENTAS_WEB.TIPO_ENTREGA = DOMICILIO y no existe linea cuyo CODIGO inicia con 600, se envia Envio Gratis Estandar. En los otros casos va vacio. El bloque se genera tambien si TIPO_ENTREGA = RETIRO EN TIENDA o si existe una linea 600.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+   <Cell ss:StyleID="s63"><Data ss:Type="String">DeliveryDetails</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">DeliveryCost</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PRECIO / 0.0</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Se toma de la primera linea cuyo CODIGO inicia con 600. Si TIPO_ENTREGA = DOMICILIO y no existe linea 600, se envia 0.0. Si TIPO_ENTREGA = RETIRO EN TIENDA, se envia vacio.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">DeliveryDetails</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">DeliveryCost</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Fijo</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Vacio</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se envia vacio.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DeliveryMinDate</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE / VENTAS_WEB</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">FECHA_REGISTRO / FECHA_CREACION</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Para linea 600 usa FECHA_REGISTRO. Si TIPO_ENTREGA = DOMICILIO y no existe linea 600, usa FECHA_CREACION. Formato YYYY-MM-DD. Si TIPO_ENTREGA = RETIRO EN TIENDA, se envia vacio.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:StyleID="s63"><Data ss:Type="String">DeliveryDetails</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DeliveryMaxDate</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE / VENTAS_WEB</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">FECHA_REGISTRO + 2 dias / FECHA_CREACION + 1 dia</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Para linea 600 usa FECHA_REGISTRO + 2 dias. Si TIPO_ENTREGA = DOMICILIO y no existe linea 600, usa FECHA_CREACION + 1 dia. Formato YYYY-MM-DD. Si TIPO_ENTREGA = RETIRO EN TIENDA, se envia vacio.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">DeliveryDetails</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">IsPickupInStore</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">CENTRO_RETIRA</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">true si CENTRO_RETIRA tiene valor; false si viene vacio o NULL.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">TIPO_ENTREGA / CENTRO_RETIRA</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">true si VENTAS_WEB.TIPO_ENTREGA = RETIRO EN TIENDA. Para DOMICILIO sin linea 600, false. Para lineas 600 sin retiro en tienda, true si CENTRO_RETIRA tiene valor; false si viene vacio o NULL.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">DeliveryDetails</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">StoreId</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">CENTRO_RETIRA</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo. Para RETIRO EN TIENDA se toma de VENTAS_WEB.CENTRO_RETIRA.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PickupContact</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">FirstName / LastName</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_NAME</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_NAME / Vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Para RETIRO EN TIENDA se envia vacio. Para lineas 600 sin retiro en tienda, se toma de PICKUP_NAME.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PickupContact</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">DocumentType</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_TYPE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Primera letra.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_TYPE / Vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Para RETIRO EN TIENDA se envia vacio. Para lineas 600 sin retiro en tienda, se toma la primera letra de PICKUP_TYPE.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PickupContact</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">DocumentNumber</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_DOCUMENT</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_DOCUMENT / Vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Para RETIRO EN TIENDA se envia vacio. Para lineas 600 sin retiro en tienda, se toma de PICKUP_DOCUMENT.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PickupContact</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">PhoneNumber</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_NUMBER</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PICKUP_NUMBER / Vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Para RETIRO EN TIENDA se envia vacio. Para lineas 600 sin retiro en tienda, se toma de PICKUP_NUMBER.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">ShippingAddress</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">ContactFirstName / ContactLastName</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">ContactFirstName</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">CLIENTE_NOMBRE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo. Si FAC_CLIENTE_TIPO = RUC, se envia vacio.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">ShippingAddress</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">DocumentType</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">ContactLastName</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">CLIENTE_TIPO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Primera letra.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DATO2</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo. Si FAC_CLIENTE_TIPO = RUC, se envia vacio.</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+   <Cell ss:StyleID="s63"><Data ss:Type="String">ShippingAddress</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">DocumentType</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DATO1 / DATO_1</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo desde DATO1. Se acepta DATO_1 como respaldo si existe. Tambien se envia cuando FAC_CLIENTE_TIPO = RUC.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">ShippingAddress</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">DocumentNumber</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">CLIENTE_CI</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo desde CLIENTE_CI. Tambien se envia cuando FAC_CLIENTE_TIPO = RUC.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">ShippingAddress</Data></Cell>
@@ -640,7 +661,7 @@
     <Cell ss:StyleID="s64"><Data ss:Type="String">IdType</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">FAC_CLIENTE_TIPO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Primera letra.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo. BillingAddress se genera solo si FAC_CLIENTE_TIPO = RUC.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">BillingAddress</Data></Cell>
@@ -694,23 +715,23 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">BillingAddress</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">DistrictCode</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">FAC_DISTRI_CODE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No se envia en BillingAddress para RUC.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">BillingAddress</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">DistrictName</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">FAC_DISTRIC_NAME</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No se envia en BillingAddress para RUC.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="29">
     <Cell ss:StyleID="s63"><Data ss:Type="String">BillingAddress</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">StreetName / StreetNumber / SecondaryStreet</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Fijo</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Vacio</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se envian vacios.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">StreetName / StreetNumber / PostalCode / SecondaryStreet</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">CLIENTE_DIRECION / CLIENTE_DIRECION2 / Vacio / Vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">StreetName usa CLIENTE_DIRECION; StreetNumber usa CLIENTE_DIRECION2; PostalCode y SecondaryStreet van vacios.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">BillingAddress</Data></Cell>
@@ -720,53 +741,53 @@
     <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">FAC_DESCUENTO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera solo si FAC_DESCUENTO &gt; 0.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No se genera en PiHeader. Los descuentos se documentan y envian por linea en PtItems.item.PromotionEntries.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionCode</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PROMOTION_CODE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Primera linea de detalle; solo si se genera Orderdiscounts.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionCode</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Este campo no se envia en Orderdiscounts; se envia en PromotionEntries cuando DESCUENTO &gt; 0.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionName</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Fijo</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Vacio</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si se genera Orderdiscounts.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionName</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Este campo no se envia en Orderdiscounts; se envia en PromotionEntries cuando DESCUENTO &gt; 0.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionType</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PROMOTION_TYPE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Primera linea de detalle; solo si se genera Orderdiscounts.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionType</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Este campo no se envia en Orderdiscounts; se envia en PromotionEntries cuando DESCUENTO &gt; 0.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionGroup</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PROMOTION_GROUP</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Primera linea de detalle; solo si se genera Orderdiscounts.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionGroup</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Este campo no se envia en Orderdiscounts; se envia en PromotionEntries cuando DESCUENTO &gt; 0.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">TotalDiscount</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">FAC_DESCUENTO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si FAC_DESCUENTO &gt; 0.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">TotalDiscount</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No aplica</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No generado</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">El valor de linea se envia en PtItems.item.TotalDiscount. Si hay DESCUENTO usa DESCUENTO * CANTIDAD; si no, usa TotalPrice.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">item</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="String">PEDIDO_WEB</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera un item por cada linea de detalle del pedido.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera un item por cada linea de detalle del pedido, excepto las lineas cuyo CODIGO inicia con 600. Si existe una linea 600, se excluye de PtItems y se genera DeliveryDetails.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
@@ -790,18 +811,18 @@
     <Cell ss:StyleID="s64"><Data ss:Type="String">Texto directo.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">BaseItemPrice</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PRECIO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Numero con 2 decimales.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">BaseItemPrice</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PRECIO / PRECIO_ORIGINAL</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Si DESCUENTO &gt; 0 usa PRECIO_ORIGINAL; si no, usa PRECIO con 2 decimales.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">TotaItemPrice</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PRECIO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Numero con 2 decimales. Etiqueta actual sin letra l por requerimiento previo.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">TotaItemPrice</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">PRECIO</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Si DESCUENTO &gt; 0 usa PRECIO sin forzar 2 decimales; si no, usa PRECIO con 2 decimales. Etiqueta actual sin letra l por requerimiento previo.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
@@ -811,46 +832,46 @@
     <Cell ss:StyleID="s64"><Data ss:Type="String">Numero.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">TotalPrice</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PRECIO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Numero con 2 decimales.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">TotalPrice</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">CANTIDAD * TotaItemPrice</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Multiplica NumberOfItems por TotaItemPrice y envia el resultado con 2 decimales.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">TotalDiscount</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PRECIO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Numero con 2 decimales.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PtItems.item</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">TotalDiscount</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DESCUENTO * CANTIDAD / TotalPrice</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Si DESCUENTO &gt; 0 multiplica DESCUENTO por NumberOfItems y envia el resultado con 2 decimales. Si DESCUENTO es 0, usa el mismo valor de TotalPrice.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionEntries.item</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">NOMBRE_PROMO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera solo si NOMBRE_PROMO tiene valor; si no, se genera vacio.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionEntries</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">DESCUENTO</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Si DESCUENTO &gt; 0 se generan los campos de promocion dentro de PromotionEntries. Si no, PromotionEntries queda vacio.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionCode / PromotionName</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">NOMBRE_PROMO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si NOMBRE_PROMO tiene valor.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionCode / PromotionName</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PROMOTION_CODE / NOMBRE_PROMO</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si DESCUENTO &gt; 0. PromotionCode usa PROMOTION_CODE; PromotionName usa NOMBRE_PROMO.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="29">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionType / PromotionGroup / Description / CouponCode</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Fijo</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">X</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si NOMBRE_PROMO tiene valor.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionType / PromotionGroup / IsEmployeePromotion / Description / CouponCode</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE / Fijo</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PROMOTION_TYPE / PROMOTION_GROUP / false / NOMBRE_PROMO / vacio</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si DESCUENTO &gt; 0. CouponCode se envia vacio.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">DiscountAmount</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">DESCUENTO</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si NOMBRE_PROMO tiene valor.</Data></Cell>
+   <Cell ss:StyleID="s63"><Data ss:Type="String">PromotionEntries</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">DiscountAmount</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">VENTAS_WEB_DETALLE</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">DESCUENTO * CANTIDAD</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Solo si DESCUENTO &gt; 0. Multiplica DESCUENTO por NumberOfItems y envia el resultado con 2 decimales.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s63"><Data ss:Type="String">GiftWrappings</Data></Cell>
@@ -905,20 +926,20 @@
     <Cell ss:StyleID="s62"><Data ss:Type="String">Condicion actual</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Orderdiscounts</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera solo si VENTAS_WEB.FAC_DESCUENTO &gt; 0. Si es 0, NULL o vacio, no se genera el bloque.</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">Orderdiscounts</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">No se genera en PiHeader. Los descuentos se manejan por linea en PtItems.item cuando VENTAS_WEB_DETALLE.DESCUENTO &gt; 0.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s64"><Data ss:Type="String">DeliveryDetails.IsPickupInStore</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">true si VENTAS_WEB.CENTRO_RETIRA tiene valor; false si viene vacio o NULL.</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">DeliveryDetails.IsPickupInStore</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">true si VENTAS_WEB.TIPO_ENTREGA = RETIRO EN TIENDA. DeliveryDetails se genera si TIPO_ENTREGA = RETIRO EN TIENDA o si existe una linea cuyo CODIGO inicia con 600.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PtItems.item</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera un item por cada registro en VENTAS_WEB_DETALLE asociado al PEDIDO_WEB.</Data></Cell>
+   <Cell ss:StyleID="s64"><Data ss:Type="String">PtItems.item</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera un item por cada registro en VENTAS_WEB_DETALLE asociado al PEDIDO_WEB, excepto registros cuyo CODIGO inicia con 600. Estos se excluyen de PtItems y, si existen, generan DeliveryDetails. RETIRO EN TIENDA tambien genera DeliveryDetails aunque no exista linea 600.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionEntries.item</Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="String">Se genera solo si la linea tiene VENTAS_WEB_DETALLE.NOMBRE_PROMO. Si no, PromotionEntries queda vacio.</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">PromotionEntries</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">Se llena solo si la linea tiene VENTAS_WEB_DETALLE.DESCUENTO &gt; 0. Los campos de promocion quedan dentro de PromotionEntries sin bloque item interno; si no hay descuento, PromotionEntries queda vacio.</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s64"><Data ss:Type="String">Pagos</Data></Cell>

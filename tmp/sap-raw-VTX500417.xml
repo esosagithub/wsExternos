@@ -1,0 +1,111 @@
+<header>
+<code>VTX500417</code>
+<date>2026-07-23 11:53:18</date>
+<countryCode>EC</countryCode>
+<currencyCode>USD</currencyCode>
+<totalPriceGross>449.7</totalPriceGross>
+<totalPriceNet>391.03999999999996</totalPriceNet>
+<Bukrs>E101</Bukrs>
+<Sitio>ADI</Sitio>
+<requiresInvoice>false</requiresInvoice>
+<customerDetails>
+<customerId>alba.torres@ec.aseyco.com</customerId>
+<documentType>ECUADORIAN_CI</documentType>
+<documentNumber>1709575318</documentNumber>
+<firstName>TORRES ARMIJOS ALBA</firstName>
+<lastName>LUCIA</lastName>
+<employeeId/>
+</customerDetails>
+<paymentDetails>
+<paymentMethod>PLACETOPAY-DINERS</paymentMethod>
+<paymentDetails>1065538</paymentDetails>
+<additionalInfo/>
+<exchangeRate/>
+<paymentInfo/>
+<paypalPaymentInfo/>
+<payuPaymentInfo/>
+<ecPaymentInfo>
+<orderId>VTX500417</orderId>
+<merchantId/>
+<merchantName/>
+<cardType>Credito</cardType>
+<paymentType>TC</paymentType>
+<maskedCardNumber>36545XXXXXX0008</maskedCardNumber>
+<paymentBrand>Diners</paymentBrand>
+<issuingBank>DINERS CLUB</issuingBank>
+<acquirerBank>INTERDIN</acquirerBank>
+<processorBankName>INTERDIN</processorBankName>
+<months>1</months>
+<wayToPay>1</wayToPay>
+<graceMonths>0</graceMonths>
+<approvedTransactionAmount>449.7</approvedTransactionAmount>
+<subtotalIva>0.0</subtotalIva>
+<subtotalIva0>391.04</subtotalIva0>
+<ivaValue>58.66</ivaValue>
+<created>2026-07-23 11:53:00</created>
+<lot>230726</lot>
+<responseCode/>
+<transactionId>29314524</transactionId>
+<approvalCode>999999</approvalCode>
+<transactionStatus>APPROVED</transactionStatus>
+<currencyCode>USD</currencyCode>
+</ecPaymentInfo>
+<creditNotePaymentInfo/>
+</paymentDetails>
+
+<deliveryDetails>
+<deliveryMethod>Envío Gratís Estándar</deliveryMethod>
+<deliveryCost>0.0</deliveryCost>
+<isPickupInStore>false</isPickupInStore>
+<storeId/>
+<pickupContact/>
+<deliveryMinDate>2026-07-26</deliveryMinDate>
+<deliveryMaxDate>2026-07-27</deliveryMaxDate>
+</deliveryDetails>
+
+<shippingAddress>
+<contactFirstName>TORRES ARMIJOS ALBA</contactFirstName>
+<contactLastName>LUCIA</contactLastName>
+<documentType>ECUADORIAN_CI</documentType>
+<documentNumber>0919593996</documentNumber>
+<phoneNumber>0993680901</phoneNumber>
+<departmentCode>201001001</departmentCode>
+<departmentName>Pichincha</departmentName>
+<provinceCode>201001001001</provinceCode>
+<provinceName>Quito</provinceName>
+<streetName>Eugenio Espejo</streetName>
+<streetNumber>Lote 2</streetNumber>
+<reference>Urb. Las Familias </reference>
+<postalCode/>
+<secondaryStreet>Joaquin Lalama</secondaryStreet>
+</shippingAddress>
+
+<billingAddress>
+<idType/>
+<idNumber/>
+<businessName/>
+<phoneNumber/>
+<departmentCode/>
+<departmentName/>
+<provinceCode/>
+<provinceName/>
+<streetName/>
+<streetNumber/>
+<reference/>
+<postalCode/>
+<secondaryStreet/>
+</billingAddress>
+
+<microSiteId>Marathon Sports Ecuador</microSiteId>
+</header>
+<items>
+<lineNumber>0</lineNumber>
+<productCode>11040422003</productCode>
+<unit>PR</unit>
+<baseItemPrice>149.9</baseItemPrice>
+<totaItemPrice>149.9</totaItemPrice>
+<numberOfItems>3</numberOfItems>
+<totalPrice>449.70000000000005</totalPrice>
+<totalDiscount>449.7</totalDiscount>
+</items>
+</ns1:MT_pedido_req>
