@@ -84,6 +84,9 @@ async function obtenerComprobantes({
         tipoArchivoActual: f.TIPO_ARCHIVO_ACTUAL || null,
         fechaGeneracion: fechaIso(f.FECHA_GENERACION),
         fechaCargaFirmado: fechaIso(f.FECHA_CARGA_FIRMADO),
+        // Decisión de Nómina sobre el firmado vigente; la carga de una corrección las limpia
+        fechaRecepcion: fechaIso(f.FECHA_RECEPCION),
+        observacionRecepcion: f.OBSERVACION_RECEPCION || null,
         urlPublica,
         archivoDisponible: disponible
       };

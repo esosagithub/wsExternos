@@ -141,6 +141,8 @@ describe('wsObtenerComprobantesVacacionesChile — respuesta y archivos', () => 
         tipoArchivoActual: 'FIRMADO',
         fechaGeneracion: '2026-10-05T14:00:00.000Z',
         fechaCargaFirmado: '2026-10-06T15:30:00.000Z',
+        fechaRecepcion: null,
+        observacionRecepcion: null,
         urlPublica: `${PUBLIC_URL}/comprobante_vacaciones_3459_x.pdf`,
         archivoDisponible: true
       }],
@@ -149,6 +151,28 @@ describe('wsObtenerComprobantesVacacionesChile — respuesta y archivos', () => 
     const json = JSON.stringify(r);
     expect(json).not.toMatch(/RUTA_FISICA|rutaFisica/);
     expect(json).not.toContain(dir.replace(/\\/g, '\\\\'));
+  });
+
+  test('rechazado: incluye observacionRecepcion y fechaRecepcion de Nómina', async () => {
+    const { deps } = crearDeps({
+      filas: [fila({
+        ESTADO_DOCUMENTO: 'RECHAZADO',
+        FECHA_RECEPCION: new Date('2026-10-14T20:23:43.000Z'),
+        OBSERVACION_RECEPCION: 'FALTA LA FECHA'
+      })]
+    });
+    const r = await service.obtenerComprobantes(params(), deps);
+    expect(r.data[0]).toMatchObject({
+      estadoDocumento: 'RECHAZADO',
+      fechaRecepcion: '2026-10-14T20:23:43.000Z',
+      observacionRecepcion: 'FALTA LA FECHA'
+    });
+  });
+
+  test('la consulta selecciona FECHA_RECEPCION y OBSERVACION_RECEPCION', async () => {
+    const conn = { execute: jest.fn().mockResolvedValue({ rows: [] }) };
+    await realRepo.buscarComprobantesChile(conn, { offset: 0, limite: 10 });
+    expect(conn.execute.mock.calls[0][0]).toMatch(/v\.FECHA_RECEPCION, v\.OBSERVACION_RECEPCION/);
   });
 
   test('archivo inexistente: urlPublica null y archivoDisponible false', async () => {

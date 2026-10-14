@@ -275,6 +275,7 @@ Solo `ci_usuario` es obligatorio.
 - Lee `OCACCESS.VW_VACACIONES_COMP_CHILE`, limitada a `PAIS` CHILE/CL. Incluye solicitudes sin comprobante (`idComprobante: null`).
 - Usa una consulta fija con binds; los filtros nunca se concatenan.
 - Ordena por `FECHA_CARGA_FIRMADO` o `FECHA_GENERACION`, de la más reciente a la más antigua.
+- `fechaRecepcion` y `observacionRecepcion`: fecha y observación de la última decisión de Nómina (recibir o rechazar) sobre el firmado vigente; `null` si no hay. Al cargar una corrección se limpian (el historial queda en `A_MS_VACACIONES_COMPROBANTE`), así que con `PENDIENTE_RECEPCION` siempre son `null`.
 - `urlPublica` solo se devuelve si el archivo existe (`archivoDisponible: true`). Con `verificar_archivo: false` no se revisa el disco, `archivoDisponible` es `null` y se devuelve la URL registrada.
 - Paginación: `limite` (100 por defecto, máximo 1000) y `pagina`. La respuesta incluye `paginacion: { pagina, limite, total }`.
 
