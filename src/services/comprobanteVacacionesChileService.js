@@ -81,14 +81,18 @@ async function existeArchivo(fsMod, ruta) {
 }
 
 // Envía el PDF físico al colaborador y registra el resultado del envío (commit incluido).
-async function enviarYRegistrar(conn, r, mailSrv, solicitud, comp, { notificar, extra = {} }) {
+async function enviarYRegistrar(conn, r, mailSrv, fsMod, solicitud, comp, { notificar, extra = {} }) {
   const idSolicitud = solicitud.ID_SOLICITUD;
   let email = null;
+  let etapa = 'CORREO_COLABORADOR';
   try {
     email = await r.obtenerCorreoColaborador(conn, solicitud.CI_SOLICITANTE);
     if (!email) {
       throw new Error(`El colaborador ${solicitud.CI_SOLICITANTE} no tiene correo registrado`);
     }
+    etapa = 'ADJUNTO';
+    await fsMod.promises.access(comp.RUTA_FISICA, fsMod.constants.R_OK);
+    etapa = 'SMTP';
     await mailSrv.enviarCorreo({
       to: email,
       cc: process.env.SMTP_CC || undefined,
@@ -98,14 +102,17 @@ async function enviarYRegistrar(conn, r, mailSrv, solicitud, comp, { notificar, 
       attachments: [{ filename: comp.NOMBRE_ARCHIVO, path: comp.RUTA_FISICA, contentType: 'application/pdf' }]
     });
   } catch (errMail) {
-    console.error(`Error enviando comprobante de la solicitud ${idSolicitud}:`, errMail.message);
-    await r.marcarEmailError(conn, comp.ID_COMPROBANTE, email, errMail.message);
+    const detalle = `${etapa}: ${mail.describirError(errMail)}`;
+    console.error(`Error enviando comprobante de la solicitud ${idSolicitud} (comprobante ${comp.ID_COMPROBANTE}, destino ${email || 'sin correo'}) en ${detalle}`);
+    if (errMail.stack) console.error(errMail.stack);
+    // El PDF se conserva: queda ERROR para que se pueda reenviar
+    await r.marcarEmailError(conn, comp.ID_COMPROBANTE, email, detalle);
     await conn.commit();
     return respuesta(idSolicitud, { ...comp, ESTADO_ENVIO_EMAIL: 'ERROR' }, {
       ...extra,
       ok: false,
       httpStatus: 502,
-      error: { code: 'EMAIL_ERROR', message: errMail.message }
+      error: { code: 'EMAIL_ERROR', etapa, message: errMail.message }
     });
   }
 
@@ -191,7 +198,7 @@ async function procesar({ idSolicitud, ciRrhh }, deps = defaultDeps) {
       return respuesta(idSolicitud, comp);
     }
 
-    return await enviarYRegistrar(conn, r, mailSrv, solicitud, comp, { notificar: true });
+    return await enviarYRegistrar(conn, r, mailSrv, fsMod, solicitud, comp, { notificar: true });
   } catch (err) {
     if (conn) await conn.rollback().catch(() => {});
     if (pdfSinConfirmar) await fsMod.promises.unlink(pdfSinConfirmar).catch(() => {});
@@ -263,7 +270,7 @@ async function reenviar({ idSolicitud, ciRrhh, forzar = false }, deps = defaultD
 
     console.log(`Reenvío de comprobante: solicitud ${idSolicitud}, Nómina ${ciRrhh}, forzar=${forzar === true}`);
     // La notificación solo se crea si nunca hubo un envío exitoso
-    return await enviarYRegistrar(conn, r, mailSrv, solicitud, comp,
+    return await enviarYRegistrar(conn, r, mailSrv, fsMod, solicitud, comp,
       { notificar: !yaEnviado, extra: { reenviado: true } });
   } catch (err) {
     if (conn) await conn.rollback().catch(() => {});

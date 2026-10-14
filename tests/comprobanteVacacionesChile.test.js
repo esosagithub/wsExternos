@@ -289,11 +289,28 @@ describe('wsGenerarEnviarComprobanteVacacionesChile', () => {
       error: { code: 'EMAIL_ERROR' }
     });
     expect(repo.marcarEmailError).toHaveBeenCalledWith(conn, 123, 'juana.perez@empresa.cl',
-      '535 Authentication unsuccessful');
+      'SMTP: 535 Authentication unsuccessful');
     expect(repo.estado.comp.INTENTOS_ENVIO_EMAIL).toBe(1);
     expect(repo.marcarEmailEnviado).not.toHaveBeenCalled();
     expect(repo.insertarNotificacion).not.toHaveBeenCalled();
     expect(conn.commit).toHaveBeenCalled();
+    expect(fs.existsSync(path.join(dir, r.nombreArchivo))).toBe(true);
+  });
+
+  test('ECONNRESET en SMTP: queda ERROR con etapa y detalle, conserva el PDF', async () => {
+    const repo = crearRepo();
+    const { conn, deps, mail } = crearDeps(repo);
+    const errRed = Object.assign(new Error('read ECONNRESET'), { code: 'ESOCKET', command: 'CONN' });
+    mail.enviarCorreo.mockRejectedValue(errRed);
+
+    const r = await service.procesar({ idSolicitud: 3459, ciRrhh: '1-9' }, deps);
+
+    expect(r).toMatchObject({
+      ok: false, httpStatus: 502, estadoEmail: 'ERROR', estadoDocumento: 'GENERADO',
+      error: { code: 'EMAIL_ERROR', etapa: 'SMTP', message: 'read ECONNRESET' }
+    });
+    expect(repo.marcarEmailError).toHaveBeenCalledWith(conn, 123, 'juana.perez@empresa.cl',
+      'SMTP: read ECONNRESET [code=ESOCKET, command=CONN]');
     expect(fs.existsSync(path.join(dir, r.nombreArchivo))).toBe(true);
   });
 
@@ -539,7 +556,7 @@ describe('wsReenviarComprobanteVacacionesChile', () => {
     const r = await service.reenviar({ idSolicitud: 3459, ciRrhh: '1-9' }, deps);
 
     expect(r).toMatchObject({ ok: false, httpStatus: 502, estadoEmail: 'ERROR', reenviado: true, error: { code: 'EMAIL_ERROR' } });
-    expect(repo.marcarEmailError).toHaveBeenCalledWith(conn, 77, 'juana.perez@empresa.cl', '535 Authentication unsuccessful');
+    expect(repo.marcarEmailError).toHaveBeenCalledWith(conn, 77, 'juana.perez@empresa.cl', 'SMTP: 535 Authentication unsuccessful');
     expect(repo.estado.comp.INTENTOS_ENVIO_EMAIL).toBe(2);
     expect(repo.insertarNotificacion).not.toHaveBeenCalled();
     expect(conn.commit).toHaveBeenCalled();

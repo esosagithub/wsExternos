@@ -10,6 +10,7 @@ const reportCouponRoutes = require('./routes/reportCouponRoutes');
 const qrRoutes = require('./routes/qrRoutes');
 const ventasWebRoutes = require('./routes/ventasWebRoutes');
 const vacacionesChileRoutes = require('./routes/vacacionesChileRoutes');
+const mailService = require('./services/mailService');
 
 
 const app = express();
@@ -57,6 +58,9 @@ async function startServer() {
 
     // Guardar referencia al servidor
     global.server = server;
+
+    // Diagnóstico SMTP al arrancar (solo registra en el log; no detiene el servidor)
+    mailService.verificarConexion().catch(() => {});
     
   } catch (error) {
     console.error('Error al iniciar el servidor:', error);
