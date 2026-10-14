@@ -80,15 +80,23 @@ async function login(req, res) {
     });
   }
 
-  const { access_token, refresh_token } = emitTokens(username);
+  try {
+    const { access_token, refresh_token } = emitTokens(username);
 
-  return res.status(200).json({
-    status: 'SUCCESS',
-    access_token,
-    refresh_token,
-    expires_in: process.env.JWT_EXPIRES_IN || '4m',
-    refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN || '5m'
-  });
+    return res.status(200).json({
+      status: 'SUCCESS',
+      access_token,
+      refresh_token,
+      expires_in: process.env.JWT_EXPIRES_IN || '4m',
+      refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN || '5m'
+    });
+  } catch (err) {
+    console.error('Error al generar tokens en login:', err);
+    return res.status(500).json({
+      status: 'ERROR',
+      error: { code: 'TOKEN_GENERATION_FAILED', message: err.message || String(err) }
+    });
+  }
 }
 
 async function refreshToken(req, res) {

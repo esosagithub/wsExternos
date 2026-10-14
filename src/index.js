@@ -4,10 +4,12 @@ const express = require('express');
 const cors = require('cors');
 const db = require('../config/database');
 const dbVtex = require('../config/databaseVtex');
+const dbOcaccess = require('../config/databaseOcaccess');
 const faqRoutes = require('./routes/faqRoutes');
 const reportCouponRoutes = require('./routes/reportCouponRoutes');
 const qrRoutes = require('./routes/qrRoutes');
 const ventasWebRoutes = require('./routes/ventasWebRoutes');
+const vacacionesChileRoutes = require('./routes/vacacionesChileRoutes');
 
 
 const app = express();
@@ -28,6 +30,7 @@ app.use('/api/faq', faqRoutes);
 app.use('/api', reportCouponRoutes);
 app.use('/api', qrRoutes);
 app.use('/vtex', ventasWebRoutes);
+app.use('/api', vacacionesChileRoutes); // Producción: https://ns.aseyco.com:444/picking/api/... (el proxy quita /picking)
 
 // Ruta de prueba
 app.get('/', (req, res) => {
@@ -45,9 +48,10 @@ async function startServer() {
   try {
     await db.initialize();
     await dbVtex.initialize();
+    await dbOcaccess.initialize();
     // (Report DB eliminado: se usa el pool principal `config/database.js`)
     // Crear el servidor y guardarlo en variable global
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`Servidor corriendo en http://localhost:${PORT}`);
     });
 
@@ -82,6 +86,7 @@ async function gracefulShutdown(signal) {
     // Cerrar pools de conexiones
     await db.close();
     await dbVtex.close();
+    await dbOcaccess.close();
     
     console.log('Aplicación cerrada correctamente');
     process.exit(0);
