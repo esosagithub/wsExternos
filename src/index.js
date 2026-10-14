@@ -1,6 +1,7 @@
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 
 const express = require('express');
+const cors = require('cors');
 const db = require('../config/database');
 const dbVtex = require('../config/databaseVtex');
 const faqRoutes = require('./routes/faqRoutes');
@@ -11,8 +12,15 @@ const ventasWebRoutes = require('./routes/ventasWebRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'Origin'],
+};
 
 // Middleware
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 
 // Rutas
